@@ -4,19 +4,15 @@ print("test")
 
 # PREPROCESSING FUNCTIONS
 
+# Padding function
+# Input: table of {audio file, label}, length to pad to
+# Output: table of {padded audio file, label}
+# Iterates through all the audio files and right-pads them with 0 to a length of [seconds]
 
 # Amplitude normalization
 # Input: audio file
 # Output: audio file
 # Normalizes amplitude of sound
-
-
-# Replace 'file.wav' with your actual audio file's name and extension
-normalized_audio = normalize_audio('file.wav')
-
-# Save the normalized audio to a new file
-normalized_audio.export("normalized_file.wav", format="wav")
-
 
 # Noise Filter
 # Input: audio file, threshold
@@ -30,12 +26,13 @@ normalized_audio.export("normalized_file.wav", format="wav")
 # Input: audio file, window of spectrogram
 # Output: spectrogram
 # Turns audio file into mel spectrogram
+def convert_to_mel_spectrogram(audio_file):
 
-# Compute the mel spectrogram
-S_dB = compute_mel_spectrogram(audio_file)
+    # Compute the mel spectrogram
+    S_dB = compute_mel_spectrogram(audio_file)
 
-# Plot the mel spectrogram
-plot_mel_spectrogram(S_dB)
+    # Plot the mel spectrogram
+    plot_mel_spectrogram(S_dB)
 
 
 # ONCE THAT IS DONE

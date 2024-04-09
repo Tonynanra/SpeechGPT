@@ -19,4 +19,7 @@ def normalize_audio(file_path, target_dBFS=-20.0):
     # Apply the necessary gain to normalize the amplitude
     normalized_audio = audio.apply_gain(change_in_dBFS)
 
+    # Save the normalized audio to a new file
+    normalized_audio.export(file_path, format="wav")
+
     return normalized_audio
