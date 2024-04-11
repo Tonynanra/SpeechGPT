@@ -4,7 +4,7 @@ import scipy.signal as signal
 import scipy.io.wavfile as wavfile
 #%%
 
-def compute_mel_spectrogram(audio_file, normalize=True):
+def compute_mel_spectrogram(y, sr, normalize=True):
     """
     Computes the mel spectrogram of an audio file.
 
@@ -12,8 +12,6 @@ def compute_mel_spectrogram(audio_file, normalize=True):
     :param normalize: Whether to normalize the mel spectrogram.
     :return: Mel spectrogram (as a NumPy array).
     """
-    # Load the audio file
-    y, sr = librosa.load(audio_file)
     
     # Compute the mel spectrogram
     S = librosa.feature.melspectrogram(y, sr=sr, n_mels=128, fmax=8000)

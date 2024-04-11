@@ -1,41 +1,21 @@
-#%%
 import numpy as np
 import scipy.signal as signal
-import scipy.io.wavfile as wavfile
-#%%
 
-def spectral_subtraction_from_wav(file_path, noise_level=0.02, attenuation=2):
-    """
-    Perform noise reduction on speech audio from a WAV file using spectral subtraction.
+def magnitude_filter(audio_signal, noise_threshold):
+    # Perform FFT to convert audio signal to frequency domain
+    fft_signal = np.fft.fft(audio_signal)
     
-    Parameters:s
-        file_path (str): Path to the input WAV file.
-        noise_level (float): Noise level estimate (default is 0.02).
-        attenuation (float): Amount of attenuation to apply (default is 2).
+    # Calculate magnitude spectrum
+    magnitude_spectrum = np.abs(fft_signal)
     
-    Returns:
-        ndarray: Noise-reduced speech audio data.
-    """
-    # Read the WAV file
-    sample_rate, audio_data = wavfile.read(file_path)
+    # Find the noise threshold
+    max_magnitude = np.max(magnitude_spectrum)
+    threshold = noise_threshold * max_magnitude
     
-    # Ensure mono audio (if stereo)
-    if len(audio_data.shape) > 1:
-        audio_data = np.mean(audio_data, axis=1)
+    # Filter out frequencies below the noise threshold
+    filtered_spectrum = np.where(magnitude_spectrum < threshold, 0, magnitude_spectrum)
     
-    # Convert audio data to floating point representation
-    audio_data = audio_data.astype(np.float64)
+    # Reconstruct the filtered signal using inverse FFT
+    filtered_signal = np.fft.ifft(filtered_spectrum).real
     
-    # Normalize audio data to range [-1, 1]
-    max_val = np.max(np.abs(audio_data))
-    if max_val > 0:
-        audio_data /= max_val
-    
-    # Perform spectral subtraction
-    processed_audio = spectral_subtraction(audio_data, noise_level, attenuation)
-    
-    # Scale back to original range and convert to 16-bit integer format
-    processed_audio *= max_val * 32767
-    processed_audio = processed_audio.astype(np.int16)
-    
-    return sample_rate, processed_audio
+    return filtered_signal
