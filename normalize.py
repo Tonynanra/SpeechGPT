@@ -1,7 +1,10 @@
-pip install pydub
-
+#%%
+import numpy as np
+import scipy.signal as signal
+import scipy.io.wavfile as wavfile
 from pydub import AudioSegment
 from pydub.playback import play
+#%%
 
 def normalize_audio(file_path, target_dBFS=-20.0):
     """

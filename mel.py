@@ -1,9 +1,8 @@
-pip install librosa
-
-import librosa
-import librosa.display
-import matplotlib.pyplot as plt
+#%%
 import numpy as np
+import scipy.signal as signal
+import scipy.io.wavfile as wavfile
+#%%
 
 def compute_mel_spectrogram(audio_file, normalize=True):
     """

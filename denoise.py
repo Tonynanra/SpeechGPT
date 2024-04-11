@@ -1,12 +1,14 @@
+#%%
 import numpy as np
 import scipy.signal as signal
 import scipy.io.wavfile as wavfile
+#%%
 
 def spectral_subtraction_from_wav(file_path, noise_level=0.02, attenuation=2):
     """
     Perform noise reduction on speech audio from a WAV file using spectral subtraction.
     
-    Parameters:
+    Parameters:s
         file_path (str): Path to the input WAV file.
         noise_level (float): Noise level estimate (default is 0.02).
         attenuation (float): Amount of attenuation to apply (default is 2).
