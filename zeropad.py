@@ -1,5 +1,4 @@
 import numpy as np
-import scipy.signal as signal
 
 def zeropad(audio_signal, sample_rate):
 
