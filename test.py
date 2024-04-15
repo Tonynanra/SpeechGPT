@@ -1,5 +1,9 @@
 # test
-
+from mel import compute_mel_spectrogram
+from zeropad import zeropad
+from denoise import magnitude_filter
+from normalize import normalize_audio
+import os
 print("test")
 
 # PREPROCESSING FUNCTIONS
@@ -26,18 +30,20 @@ print("test")
 # Input: audio file, window of spectrogram
 # Output: spectrogram
 # Turns audio file into mel spectrogram
-def convert_to_mel_spectrogram(audio_file):
-
-    # Compute the mel spectrogram
-    S_dB = compute_mel_spectrogram(audio_file)
-
-    # Plot the mel spectrogram
-    plot_mel_spectrogram(S_dB)
-
 
 # ONCE THAT IS DONE
 # Write one function that iterates through a table of {audio file, label} and runs each function on the audio files.
 # Replaces
+
+def preprocessing_function(directory, sampleRate):
+    for file in os.listdir(directory):
+        zeropad(file, sampleRate)
+        magnitude_filter(file, 30) # TODO: change the 30 to appropiate threshold
+        normalize_audio(file)
+        spectrogram = compute_mel_spectrogram(file)
+
+
+
 
 
 # MODEL
