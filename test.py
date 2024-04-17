@@ -35,12 +35,15 @@ print("test")
 # Write one function that iterates through a table of {audio file, label} and runs each function on the audio files.
 # Replaces
 
+training_samples = dict()
+
 def preprocessing_function(directory, sampleRate):
     for file in os.listdir(directory):
         zeropad(file, sampleRate)
         magnitude_filter(file, 30) # TODO: change the 30 to appropiate threshold
         normalize_audio(file)
         spectrogram = compute_mel_spectrogram(file)
+        training_samples[os.path.basename(file)].append()
 
 
 
