@@ -2,6 +2,7 @@
 import numpy as np
 import scipy.signal as signal
 import scipy.io.wavfile as wavfile
+import librosa
 #%%
 
 def compute_mel_spectrogram(y, sr, normalize=True):

@@ -6,7 +6,7 @@ from pydub import AudioSegment
 from pydub.playback import play
 #%%
 
-def normalize_audio(audio, target_dBFS=-20.0):
+def normalize_audio(audio : AudioSegment, target_dBFS=-20.0) -> AudioSegment:
     """
     Normalizes the audio file's amplitude to a target dBFS.
 
