@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from zeropad import zeropad
 
 
-samplerate, data = wavfile.read('./train/audio/seven/0a0b46ae_nohash_0.wav')
+samplerate, data = wavfile.read('./0a0b46ae_nohash_0 (1).wav')
 
 plt.plot(data)
 plt.show()
