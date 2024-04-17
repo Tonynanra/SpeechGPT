@@ -6,6 +6,7 @@ from typing import List
 class customWhisperFeatureExtractor(WhisperFeatureExtractor):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.n_mels = kwargs.pop("feature_size")
 
     def _torch_extract_fbank_features(self, waveform: np.array) -> np.ndarray:
         """
