@@ -124,10 +124,10 @@ def preprocessing_function(waveform : np.ndarray, sampleRate : int) -> np.ndarra
         waveform (:obj:`np.array`): 1D waveform of raw audio.
         sampleRate (:obj:`int`): Sample rate of the audio.
     Returns:
-        mel_spectrogram(:obj:`np.ndarray`): Mel spectrogram of the audio.
+        waveform_processed (:obj:`np.ndarray`): processed waveform of the audio.
     """
     # TODO: change implementation to the above specification
-    
+
     for file in os.listdir(directory):
         zeropad(file, sampleRate)
         magnitude_filter(file, 30) # TODO: change the 30 to appropiate threshold
