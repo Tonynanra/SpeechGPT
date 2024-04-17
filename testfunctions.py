@@ -15,7 +15,7 @@ plt.show()
 # plt.show()
 
 plt.figure(3)
-fftdata = numpy.fft.fft(data)
+fftdata = np.fft.fft(data)
 plt.plot(fftdata)
 plt.show()
 
