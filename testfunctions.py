@@ -1,13 +1,19 @@
 from scipy.io import wavfile
 import numpy as np 
 import matplotlib.pyplot as plt 
- 
+from zeropad import zeropad
 
 
 samplerate, data = wavfile.read('./train/audio/seven/0a0b46ae_nohash_0.wav')
 
 plt.plot(data)
 plt.show()
+
+plt.figure(2)
+zeropadded = zeropad(data, samplerate)
+plt.plot(zeropadded)
+plt.show()
+
 # data to be plotted
 # x = np.arange(1, 11) 
 # y = x * x
