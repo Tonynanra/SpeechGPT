@@ -6,13 +6,11 @@ def zeropad(audio_signal, sample_rate):
     tgt_length = 30 * sample_rate
     
     #add zeroes if its too short
-    if size(audio_signal) < tgt_length:
-        while size(audio_signal) < tgt_length:
-            audio_signal.append(0)
-            
+    while audio_signal.size < tgt_length:
+        audio_signal.append(0)
+    
     #truncate if its too long
-    else:
-        while size(audio_signal) > tgt_length:
-            audio_signal.pop()
+    while audio_signal.size > tgt_length:
+        audio_signal.pop()
     
     return audio_signal
