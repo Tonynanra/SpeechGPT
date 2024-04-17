@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.signal as signal
 
-def magnitude_filter(audio_signal, noise_threshold):
+def denoise(audio_signal, noise_threshold):
     # Perform FFT to convert audio signal to frequency domain
     fft_signal = np.fft.fft(audio_signal)
     
@@ -13,7 +13,7 @@ def magnitude_filter(audio_signal, noise_threshold):
     threshold = noise_threshold * max_magnitude
     
     # Filter out frequencies below the noise threshold
-    filtered_spectrum = np.where(magnitude_spectrum < threshold, 0, magnitude_spectrum)
+    filtered_spectrum = np.where(abs(fft_signal) < threshold, 0, fft_signal)
     
     # Reconstruct the filtered signal using inverse FFT
     filtered_signal = np.fft.ifft(filtered_spectrum).real
