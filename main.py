@@ -117,7 +117,17 @@ def band_pass_filter(wav_file_path):
 
 training_samples = dict()
 
-def preprocessing_function(directory, sampleRate):
+def preprocessing_function(waveform : np.ndarray, sampleRate : int) -> np.ndarray:
+    """
+    Preprocesses the audio file to be used in the training of the model.
+    Args:
+        waveform (:obj:`np.array`): 1D waveform of raw audio.
+        sampleRate (:obj:`int`): Sample rate of the audio.
+    Returns:
+        mel_spectrogram(:obj:`np.ndarray`): Mel spectrogram of the audio.
+    """
+    # TODO: change implementation to the above specification
+    
     for file in os.listdir(directory):
         zeropad(file, sampleRate)
         magnitude_filter(file, 30) # TODO: change the 30 to appropiate threshold
