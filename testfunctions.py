@@ -9,9 +9,14 @@ samplerate, data = wavfile.read('./0a0b46ae_nohash_0 (1).wav')
 plt.plot(data)
 plt.show()
 
-plt.figure(2)
-zeropadded = zeropad(data, samplerate)
-plt.plot(zeropadded)
+# plt.figure(2)
+# zeropadded = zeropad(data, samplerate)
+# plt.plot(zeropadded)
+# plt.show()
+
+plt.figure(3)
+fftdata = numpy.fft.fft(data)
+plt.plot(fftdata)
 plt.show()
 
 # data to be plotted
