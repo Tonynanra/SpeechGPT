@@ -1,8 +1,6 @@
 # main
 
 import os
-print("test")
-
 # PREPROCESSING FUNCTIONS
 
 # Padding function
@@ -15,7 +13,7 @@ from zeropad import zeropad
 # Input: audio file
 # Output: audio file
 # Normalizes amplitude of sound
-from normalize import normalize_audio
+from normalize import normalize
 
 # Noise Filter
 # Input: audio file, threshold
@@ -33,27 +31,9 @@ from mel import compute_mel_spectrogram
 # Write one function that iterates through a table of {audio file, label} and runs each function on the audio files.
 # Replaces
 
-training_samples = dict()
-
 def preprocessing_function(waveform, sampleRate):
     stage1 = zeropad(waveform, sampleRate)
     stage2 = denoise(stage1, 0.1)
-    stage3 = normalize_audio(stage2)
+    stage3 = normalize(stage2, sampleRate)
     return stage3
 
-
-
-
-
-# MODEL
-
-# TRAINING
-# Input: table of {audio file, label}
-# Trains the CNN on the audio files and labels
-
-# INFERENCE
-# Input: untrained audio file
-# Output: word/sentence predicted
-
-# ACCURACY EVALUATION
-# do an inference on many untrained audio files, count how many were correct

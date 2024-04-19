@@ -9,8 +9,7 @@ from pydub.playback import play
 from pydub import AudioSegment
 import numpy as np
 
-from pydub import AudioSegment
-import numpy as np
+
 
 def audio_segment_to_numpy_array(audio_segment):
     """
