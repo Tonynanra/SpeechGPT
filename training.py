@@ -109,9 +109,9 @@
 # Hub authentication token when prompted. Find your Hub authentication token [here](https://huggingface.co/settings/tokens):
 
 # %%
-from huggingface_hub import interpreter_login
+# from huggingface_hub import login
 
-interpreter_login()
+# login()
 
 # %% [markdown]
 # ## Load Dataset
@@ -207,6 +207,9 @@ from transformers import WhisperTokenizer
 
 tokenizer = WhisperTokenizer.from_pretrained("openai/whisper-small", language="English", task="transcribe")
 
+# %%
+tokenizer.batch_en
+
 # %% [markdown]
 # ### Combine To Create A WhisperProcessor
 
@@ -260,23 +263,22 @@ print(librispeech["train"][0])
 # 3. We encode the transcriptions to label ids through the use of the tokenizer.
 
 # %%
-from main import preprocessing_function
 def prepare_dataset(batch):
     # load and resample audio data from 48 to 16kHz
     audio = batch["audio"]
-    audio["array"] = preprocessing_function(audio['array'], audio['sampling_rate'])
     # compute log-Mel input features from input audio array
     batch["input_features"] = feature_extractor(audio["array"], sampling_rate=audio["sampling_rate"]).input_features[0]
 
     # encode target text to label ids
-    batch["labels"] = tokenizer(batch["text"]).input_ids
+    batch["labels"] = tokenizer(batch["text"].lower()).input_ids
     return batch
 
 # %% [markdown]
 # We can apply the data preparation function to all of our training examples using dataset's `.map` method. The argument `num_proc` specifies how many CPU cores to use. Setting `num_proc` > 1 will enable multiprocessing. If the `.map` method hangs with multiprocessing, set `num_proc=1` and process the dataset sequentially.
 
 # %%
-librispeech = librispeech.map(prepare_dataset, remove_columns=librispeech.column_names["train"], num_proc=12)
+import multiprocessing as mp
+librispeech = librispeech.map(prepare_dataset, remove_columns=librispeech.column_names["train"], num_proc=mp.cpu_count())
 
 # %% [markdown]
 # ## Training and Evaluation
@@ -346,10 +348,8 @@ model.generation_config.forced_decoder_ids = None
 
 # %%
 import torch
-
 torch.backends.cudnn.enabled = True
 torch.backends.cudnn.benchmark = True
-
 from dataclasses import dataclass
 from typing import Any, Dict, List, Union
 
@@ -438,13 +438,13 @@ from transformers import Seq2SeqTrainingArguments
 
 training_args = Seq2SeqTrainingArguments(
     output_dir="./speech",  # change to a repo name of your choice
-    per_device_train_batch_size=4,
-    gradient_accumulation_steps=4,  # increase by 2x for every 2x decrease in batch size
+    per_device_train_batch_size=8,
+    gradient_accumulation_steps=2,  # increase by 2x for every 2x decrease in batch size
     learning_rate=1e-5,
     warmup_steps=500,
-    num_train_epochs=3,
+    max_steps=10,
     gradient_checkpointing=False,
-    dataloader_num_workers=12,
+    dataloader_num_workers=mp.cpu_count(),
     fp16=True,
     evaluation_strategy="steps",
     per_device_eval_batch_size=8,
@@ -540,18 +540,3 @@ kwargs = {
 
 # %%
 trainer.push_to_hub(**kwargs)
-
-# %% [markdown]
-# ## Building a Demo
-
-# %% [markdown]
-# Now that we've fine-tuned our model we can build a demo to show
-# off its ASR capabilities! We'll make use of 🤗 Transformers
-# `pipeline`, which will take care of the entire ASR pipeline,
-# right from pre-processing the audio inputs to decoding the
-# model predictions.
-# 
-# Running the example below will generate a Gradio demo where we
-# can record speech through the microphone of our computer and input it to
-# our fine-tuned Whisper model to transcribe the corresponding text:
-
