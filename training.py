@@ -109,9 +109,9 @@
 # Hub authentication token when prompted. Find your Hub authentication token [here](https://huggingface.co/settings/tokens):
 
 # %%
-# from huggingface_hub import login
+from huggingface_hub import login
 
-# login()
+login()
 
 # %% [markdown]
 # ## Load Dataset
@@ -127,7 +127,7 @@
 # of `test` data as our held-out test set:
 
 # %%
-from datasets import load_dataset, DatasetDict
+from datasets import load_dataset, DatasetDict, DownloadConfig
 
 librispeech = DatasetDict()
 
@@ -206,10 +206,6 @@ feature_extractor = CustomFeatureExtractor.from_pretrained("openai/whisper-small
 from transformers import WhisperTokenizer
 
 tokenizer = WhisperTokenizer.from_pretrained("openai/whisper-small", language="English", task="transcribe")
-
-# %%
-tokenizer.batch_en
-
 # %% [markdown]
 # ### Combine To Create A WhisperProcessor
 
@@ -278,7 +274,7 @@ def prepare_dataset(batch):
 
 # %%
 import multiprocessing as mp
-librispeech = librispeech.map(prepare_dataset, remove_columns=librispeech.column_names["train"], num_proc=mp.cpu_count())
+librispeech = librispeech.map(prepare_dataset, remove_columns=librispeech.column_names["train"], num_proc=6)
 
 # %% [markdown]
 # ## Training and Evaluation
@@ -442,15 +438,15 @@ training_args = Seq2SeqTrainingArguments(
     gradient_accumulation_steps=2,  # increase by 2x for every 2x decrease in batch size
     learning_rate=1e-5,
     warmup_steps=500,
-    max_steps=10,
+    num_train_epochs=1,
     gradient_checkpointing=False,
-    dataloader_num_workers=mp.cpu_count(),
+    dataloader_num_workers=6,
     fp16=True,
     evaluation_strategy="steps",
     per_device_eval_batch_size=8,
     predict_with_generate=True,
     generation_max_length=225,
-    save_steps=1000,
+    save_steps=2000,
     eval_steps=1000,
     logging_steps=25,
     report_to=["tensorboard"],
