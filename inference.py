@@ -4,9 +4,11 @@ import os
 import numpy as np
 import soundfile as sf
 import torch
-from feature_extractor import CustomFeatureExtractor, WhisperFeatureExtractor
+from feature_extractor import CustomFeatureExtractor
 
-feature_extractor = WhisperFeatureExtractor.from_pretrained("tluo23/speech")
+torch.backends.cudnn.enabled = True
+torch.backends.cudnn.benchmark = True
+feature_extractor = CustomFeatureExtractor.from_pretrained("tluo23/speech")
 
 pipe = pipeline(
     task="automatic-speech-recognition",

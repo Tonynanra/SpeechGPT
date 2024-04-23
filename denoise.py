@@ -2,6 +2,7 @@ import numpy as np
 import scipy.signal as signal
 
 def denoise(audio_signal, noise_threshold):
+    audio_signal = audio_signal.astype(np.float64)
     # Perform FFT to convert audio signal to frequency domain
     fft_signal = np.fft.fft(audio_signal)
     
@@ -17,5 +18,6 @@ def denoise(audio_signal, noise_threshold):
     
     # Reconstruct the filtered signal using inverse FFT
     filtered_signal = np.fft.ifft(filtered_spectrum).real
+   
     
     return filtered_signal
