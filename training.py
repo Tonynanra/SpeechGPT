@@ -1,5 +1,5 @@
 """
-Adopted from: https://huggingface.co/blog/fine-tune-whisper
+Adapted from: https://huggingface.co/blog/fine-tune-whisper
 """
 
 from datasets import load_dataset, DatasetDict, Audio
@@ -16,7 +16,6 @@ torch.backends.cudnn.benchmark = True
 
 from huggingface_hub import login
 login()
-
 #%% Dataset loading
 
 librispeech = DatasetDict()
