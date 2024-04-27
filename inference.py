@@ -4,22 +4,25 @@ import os
 import numpy as np
 import soundfile as sf
 import torch
-from feature_extractor import CustomFeatureExtractor, WhisperFeatureExtractor
+from feature_extractor import CustomFeatureExtractor
 
-feature_extractor = WhisperFeatureExtractor.from_pretrained("tluo23/speech")
+torch.backends.cudnn.enabled = True
+torch.backends.cudnn.benchmark = True
+feature_extractor = CustomFeatureExtractor.from_pretrained("tluo23/speech")
 
 pipe = pipeline(
     task="automatic-speech-recognition",
     model="tluo23/speech",
     feature_extractor=feature_extractor,
     device='cuda' if torch.cuda.is_available() else 'cpu', 
-    )  # change to "your-username/the-name-you-picked"
+    )
 
 
 def transcribe(audio, state=""):
     data, _ = sf.read(audio)
     rms = np.sqrt(np.mean(data**2))
     
+    # Thresholding to avoid empty transcriptions
     volume_threshold = 0.01
     
     if rms > volume_threshold:

@@ -20,6 +20,7 @@ class CustomFeatureExtractor(WhisperFeatureExtractor):
         self,
         raw_speech: Union[np.ndarray, List[float], List[np.ndarray], List[List[float]]],
         truncation: bool = True,
+        noise_threshold = 1e-3,
         pad_to_multiple_of: Optional[int] = None,
         return_tensors: Optional[Union[str, TensorType]] = None,
         return_attention_mask: Optional[bool] = None,
@@ -109,7 +110,7 @@ class CustomFeatureExtractor(WhisperFeatureExtractor):
         batched_speech = BatchFeature({"input_features": raw_speech})
 
         for i, waveform in enumerate(batched_speech["input_features"]):
-            batched_speech["input_features"][i] = preprocessing_function(waveform.squeeze(), self.sampling_rate).reshape(-1, 1)
+            batched_speech["input_features"][i] = preprocessing_function(waveform.squeeze(), self.sampling_rate, noise_threshold).reshape(-1, 1)
         # convert into correct format for padding
 
         padded_inputs = self.pad(

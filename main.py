@@ -1,6 +1,5 @@
 # main
 
-import os
 # PREPROCESSING FUNCTIONS
 
 # Padding function
@@ -31,9 +30,10 @@ from mel import compute_mel_spectrogram
 # Write one function that iterates through a table of {audio file, label} and runs each function on the audio files.
 # Replaces
 
-def preprocessing_function(waveform, sampleRate):
+def preprocessing_function(waveform, sampleRate, noise_threshold):
     stage1 = zeropad(waveform, sampleRate)
-    stage2 = denoise(stage1, 0.1)
+    stage2 = denoise(stage1, noise_threshold)
     stage3 = normalize(stage2, sampleRate)
+
     return stage3
 
