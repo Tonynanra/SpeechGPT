@@ -28,7 +28,7 @@ soundfile.write('test_original.wav', data, audio['sampling_rate'])
 
 #%%
 
-audio = AudioSegment.from_file("Recording.m4a", "m4a")
+audio = AudioSegment.from_file("0a0b46ae_nohash_0.wav", "m4a")
 
 # Convert to mono and get data as numpy array
 audio = audio.set_channels(1)
