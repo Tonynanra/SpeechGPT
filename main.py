@@ -20,12 +20,6 @@ from normalize import normalize
 # Eliminiates frequencies with a magnitude below [some threshold]
 from denoise import denoise
 
-# Mel Spectrogram
-# Input: audio file, window of spectrogram
-# Output: spectrogram
-# Turns audio file into mel spectrogram
-from mel import compute_mel_spectrogram
-
 # ONCE THAT IS DONE
 # Write one function that iterates through a table of {audio file, label} and runs each function on the audio files.
 # Replaces
