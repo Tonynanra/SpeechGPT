@@ -45,16 +45,19 @@ def numpy_array_to_audio_segment(audio_array, sample_rate, channels=1):
 # Assuming you have a numpy array `audio_array` and a `sample_rate` e.g., 44100 Hz
 # audio_segment = numpy_array_to_audio_segment(audio_array, sample_rate)
 
-
 def normalize(audio_signal, sample_rate, target_dBFS=-20.0):
-
     audSeg = numpy_array_to_audio_segment(audio_signal, sample_rate, channels=1)
-    # Calculate the difference between the target dBFS and the current average dBFS
-    change_in_dBFS = target_dBFS - audSeg.dBFS
+    
+    peak_amplitude = np.max(np.abs(audio_signal))
 
-    # Apply the necessary gain to normalize the amplitude
-    normalized_audio = audSeg.apply_gain(change_in_dBFS)
+    target_linear_scale = 10 ** (target_dBFS / 20.0)
 
-    outputSignal = audio_segment_to_numpy_array(normalized_audio)
-
-    return outputSignal
+    current_max_linear_scale = peak_amplitude / (2**15)
+    
+    scaling_factor = target_linear_scale / current_max_linear_scale
+    
+    normalized_signal = audio_signal * scaling_factor
+    
+    normalized_signal = np.clip(normalized_signal, -32768, 32767)
+    
+    return normalized_signal.astype(np.int16)
