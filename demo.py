@@ -5,7 +5,7 @@ from denoise import denoise
 from zeropad import zeropad
 from normalize import normalize
 
-sample_rate, audio_signal = wavfile.read("0a0b46ae_nohash_0.wav")
+sample_rate, audio_signal = wavfile.read("seven.wav")
 
 fig, axes = plt.subplots(4, 1, figsize=(12, 12))  # Create 4 subplots
 times = np.arange(len(audio_signal)) / sample_rate
