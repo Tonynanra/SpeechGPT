@@ -10,6 +10,7 @@
 !*.ipynb
 !*.py
 !.gitignore
+!*.txt
 
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
